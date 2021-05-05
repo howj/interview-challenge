@@ -1,9 +1,31 @@
 import logo from './logo-symbol.svg';
 import './App.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { AppBar, InputBase, Toolbar } from '@material-ui/core';
+import { Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
   grow: {
     flexGrow: 1,
   },
@@ -65,13 +87,18 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  drawerContainer: {
+    height: '100%',
+    overflow: 'auto',
+    backgroundColor: '#d6d8d8',
+  }
 }));
 
 function App() {
   const classes = useStyles();
   return (
     <div className="App">
-      <AppBar position="static">
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar style={{ justifyContent: "space-between", backgroundColor: "#24292e" }}>
           <img style={{ maxHeight: '50px' }} src={logo} alt="helpfulhuman_logo" />
           <InputBase
@@ -84,9 +111,33 @@ function App() {
             inputProps={{ 'aria-label': 'search' }}
           />
         </Toolbar>
-
-
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <Box style={{ width: '100%', textAlign: 'center', marginTop: '30px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+            >
+              Random Color
+          </Button>
+          </Box>
+          <List>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </Drawer>
     </div>
   );
 }
