@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [currColor, setColor] = useState("");
   const [curr, setCurr] = useState("main");
@@ -126,13 +127,25 @@ function App() {
         <Toolbar style={{ justifyContent: "space-between", backgroundColor: "#24292e" }}>
           <img style={{ maxHeight: '50px' }} src={logo} alt="helpfulhuman_logo" />
           <InputBase
+            onChange={(event) => {
+              if (event.target.value && event.target.value !== "") {
+                setSearch(event.target.value);
+                setCurr("detail");
+                if (colors.find(color => color === event.target.value)) {
+                  setColor(event.target.value);
+                }
+              } else {
+                setSearch("");
+                setCurr("main");
+              }
+            }}
             style={{ backgroundColor: 'white' }}
             placeholder="Search"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
-            inputProps={{ 'aria-label': 'search' }}
+            inputProps={{ 'aria-label': 'searchinput' }}
           />
         </Toolbar>
       </AppBar>
@@ -187,7 +200,12 @@ function App() {
             </Box>
           </>
         )}
-        {curr === 'detail' && (
+        {curr === "detail" && search !== "" && !colors.find(color => color === search) && (
+          <>
+            {search} is not a color.
+          </>
+        )}
+        {curr === 'detail' && (search === "" || (colors.find(color => color === search))) && (
           <>
             <Card className={classes.root}>
               <CardActionArea>
@@ -201,7 +219,7 @@ function App() {
             </Card>
             <Box display="flex" justifyContent="center">
               <Button
-                onClick={() => { setCurr("main"); }}
+                onClick={() => { setCurr("main"); setSearch(""); setColor(""); }}
                 variant="outlined"
                 style={{ width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
               >
