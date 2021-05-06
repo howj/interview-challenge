@@ -1,14 +1,19 @@
 import logo from './logo-symbol.svg';
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 // import './index.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
-import { Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
+import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
   font: {
     fontFamily: "'Source Serif Pro', serif",
   },
@@ -90,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [page, setPage] = useState(1);
-  const [color, setColor] = useState("");
+  const [currColor, setColor] = useState("");
   const [curr, setCurr] = useState("main");
   const handleChange = (event, value) => {
     setPage(value);
@@ -160,23 +165,52 @@ function App() {
           </List>
         </div>
       </Drawer>
-      {curr === "main" && (
-        <div style={{ marginTop: '200px', marginLeft: '500px' }}>
-          {colors.slice(12 * page - 12, 12 * page).map(color => <div>
+      <Container style={{ marginTop: '100px', marginLeft: drawerWidth }}>
+        {curr === "main" && (
+          <>
+            <Grid container spacing={2}>
+              {colors.slice(12 * page - 12, 12 * page).map(color => <Grid item xs={3}>
+                <Card onClick={() => { setCurr("detail"); setColor(color); }} className={classes.root}>
+                  <CardActionArea>
+                    <div style={{ backgroundColor: color, height: 150, width: 300 }} />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {color}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>)}
+            </Grid>
+            <Pagination count={Math.ceil(colors.length / 12)} page={page} onChange={handleChange} />
+          </>
+        )}
+        {curr === 'detail' && (
+          <>
             <Card className={classes.root}>
               <CardActionArea>
-                <div style={{ backgroundColor: color, height: 150, width: 150 }} />
+                <div style={{ backgroundColor: currColor, height: 600, width: 'auto' }} />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {color}
+                    {currColor}
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>
-          </div>)}
-          <Pagination count={10} page={page} onChange={handleChange} />
-        </div>
-      )}
+            <Box display="flex" justifyContent="center">
+            <Button
+              onClick={()=>{setCurr("main");}}
+              variant="outlined"
+              style={{ width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
+            >
+              <strong>
+                Clear
+              </strong>
+            </Button>
+            </Box>
+          </>
+        )}
+      </Container>
     </div>
   );
 }
