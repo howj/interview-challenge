@@ -6,6 +6,7 @@ import { Pagination } from '@material-ui/lab';
 import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
 
 const drawerWidth = 240;
+const swatches_per_page = 12;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,9 +69,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -119,6 +119,90 @@ function App() {
     "#d7dbdd",
     "#76d7c4",
     "#ba4a00",
+    "#7b7d7d",
+    "#626567",
+    "#424949",
+    "#4d5656",
+    "#1b2631",
+    "#17202a",
+    "#145a32",
+    "#186a3b",
+    "#7d6608",
+    "#7e5109",
+    "#784212",
+    "#6e2c00",
+    "#1b4f72",
+    "#154360",
+    "#4a235a",
+    "#512e5f",
+    "#78281f",
+    "#641e16",
+    "#8e44ad",
+    "#2980b9",
+    "#3498db",
+    "#16a085",
+    "#27ae60",
+    "#1abc9c",
+    "#d7dbdd",
+    "#f7dc6f",
+    "#e59866",
+    "#f0b27a",
+    "#f8c471",
+    "#f4f6f7",
+    "#9b59b6",
+    "#58d68d",
+    "#73c6b6",
+    "#c39bd3",
+    "#aed6f1",
+    "#808b96",
+    "#85929e",
+    "#34495e",
+    "#a04000",
+    "#dc7633",
+    "#bb8fce",
+    "#7d3c98",
+    "#229954",
+    "#2e86c1",
+    "#a569bd",
+    "#e8daef",
+    "#f5b7b1",
+    "#aed6f1",
+    "#aab7b8",
+    "#212f3d",
+    "#196f3d",
+    "#b7950b",
+    "#b3b6b7",
+    "#229954",
+    "#660000",
+    "#CC0000",
+    "#CC3300",
+    "#CC6600",
+    "#CC9900",
+    "#CCCC00",
+    "#00CCCC",
+    "#0066CC",
+    "#3300FF",
+    "#333399",
+    "#339999",
+    "#339933",
+    "#663366",
+    "#6633CC",
+    "#FF00FF",
+    "#9900CC",
+    "#990099",
+    "#FF0066",
+    "#CCFF66",
+    "#CC9966",
+    "#CC00CC",
+    "#CC66CC",
+    "#660099",
+    "#66FFFF",
+    "#003300",
+    "#006633",
+    "#66CCCC",
+    "#00FFFF",
+    "#0000FF",
+    "#33CC33",
   ];
 
   return (
@@ -182,7 +266,7 @@ function App() {
         {curr === "main" && (
           <>
             <Grid container spacing={2}>
-              {colors.slice(12 * page - 12, 12 * page).map(color => <Grid item xs={3}>
+              {colors.slice(swatches_per_page * page - swatches_per_page, swatches_per_page * page).map(color => <Grid item xs={3}>
                 <Card onClick={() => { setCurr("detail"); setColor(color); }} className={classes.root}>
                   <CardActionArea>
                     <div style={{ backgroundColor: color, height: 150, width: 300 }} />
@@ -196,7 +280,7 @@ function App() {
               </Grid>)}
             </Grid>
             <Box style={{ marginTop: '20px' }} display="flex" justifyContent="center">
-              <Pagination count={Math.ceil(colors.length / 12)} page={page} onChange={handleChange} />
+              <Pagination count={Math.ceil(colors.length / swatches_per_page)} page={page} onChange={handleChange} />
             </Box>
           </>
         )}
