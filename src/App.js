@@ -211,9 +211,11 @@ function App() {
             onChange={(event) => {
               if (event.target.value && event.target.value !== "") {
                 setSearch(event.target.value);
-                setCurr("detail");
                 if (colors.find(color => color === event.target.value)) {
                   setColor(event.target.value);
+                  setCurr("detail");
+                } else {
+                  setCurr("main");
                 }
               } else {
                 setSearch("");
@@ -283,12 +285,7 @@ function App() {
             </Box>
           </>
         )}
-        {curr === "detail" && search !== "" && !colors.find(color => color === search) && (
-          <div style={{ fontFamily: "Source Serif Pro" }}>
-            {search} is not a color.
-          </div>
-        )}
-        {curr === 'detail' && (search === "" || (colors.find(color => color === search))) && (
+        {curr === 'detail' && (
           <>
             <Card className={classes.root}>
               <CardActionArea>
