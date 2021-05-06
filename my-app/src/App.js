@@ -3,7 +3,7 @@ import './App.css';
 import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
-import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
+import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
 
 const drawerWidth = 240;
 const swatches_per_page = 12;
@@ -13,9 +13,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  },
-  font: {
-    fontFamily: "'Source Serif Pro', serif",
   },
   root: {
     display: 'flex',
@@ -206,7 +203,7 @@ function App() {
   ];
 
   return (
-    <div className="App font">
+    <div className="App">
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar style={{ justifyContent: "space-between", backgroundColor: "#24292e" }}>
           <img style={{ maxHeight: '50px' }} src={logo} alt="helpfulhuman_logo" />
@@ -223,7 +220,7 @@ function App() {
                 setCurr("main");
               }
             }}
-            style={{ backgroundColor: 'white' }}
+            style={{ fontFamily: "Source Serif Pro", backgroundColor: 'white' }}
             placeholder="Search"
             classes={{
               root: classes.inputRoot,
@@ -245,7 +242,7 @@ function App() {
           <Box style={{ width: '100%', textAlign: 'center', marginTop: '30px' }}>
             <Button
               variant="outlined"
-              style={{ backgroundColor: '#fff', textTransform: 'none' }}
+              style={{ fontFamily: "Source Serif Pro", backgroundColor: '#fff', textTransform: 'none' }}
               onClick={() => { setCurr("detail"); setColor(colors[Math.floor(Math.random() * (colors.length - 1))]); }}
             >
               <strong>
@@ -255,8 +252,10 @@ function App() {
           </Box>
           <List>
             {['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Brown', 'Gray'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
+              <ListItem style={{ fontFamily: "Source Serif Pro" }} button key={text}>
+                <div style={{ fontFamily: "Source Serif Pro" }}>
+                  {text}
+                </div>
               </ListItem>
             ))}
           </List>
@@ -271,7 +270,7 @@ function App() {
                   <CardActionArea>
                     <div style={{ backgroundColor: color, height: 150, width: 300 }} />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography style={{ fontFamily: "Source Serif Pro" }} gutterBottom variant="h5" component="h2">
                         {color}
                       </Typography>
                     </CardContent>
@@ -285,9 +284,9 @@ function App() {
           </>
         )}
         {curr === "detail" && search !== "" && !colors.find(color => color === search) && (
-          <>
+          <div style={{ fontFamily: "Source Serif Pro" }}>
             {search} is not a color.
-          </>
+          </div>
         )}
         {curr === 'detail' && (search === "" || (colors.find(color => color === search))) && (
           <>
@@ -295,7 +294,7 @@ function App() {
               <CardActionArea>
                 <div style={{ backgroundColor: currColor, height: 600, width: 'auto' }} />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
+                  <Typography style={{ fontFamily: "Source Serif Pro" }} gutterBottom variant="h5" component="h2">
                     {currColor}
                   </Typography>
                 </CardContent>
@@ -305,7 +304,7 @@ function App() {
               <Button
                 onClick={() => { setCurr("main"); setSearch(""); setColor(""); }}
                 variant="outlined"
-                style={{ width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
+                style={{ fontFamily: "Source Serif Pro", width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
               >
                 <strong>
                   Clear
