@@ -1,11 +1,17 @@
 import logo from './logo-symbol.svg';
 import './App.css';
+import { useState } from 'react';
+// import './index.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
+import { Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  font: {
+    fontFamily: "'Source Serif Pro', serif",
+  },
   root: {
     display: 'flex',
   },
@@ -15,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    backgroundColor: '#d1d5da',
   },
   drawerPaper: {
     width: drawerWidth,
@@ -53,15 +60,6 @@ const useStyles = makeStyles((theme) => ({
       width: 'auto',
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   inputRoot: {
     backgroundColor: 'inherit',
   },
@@ -87,17 +85,39 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  drawerContainer: {
-    height: '100%',
-    overflow: 'auto',
-    backgroundColor: '#d6d8d8',
-  }
 }));
 
 function App() {
   const classes = useStyles();
+  const [page, setPage] = useState(1);
+  const [color, setColor] = useState("");
+  const [curr, setCurr] = useState("main");
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
+  const colors = [
+    "#088F8F",
+    "#7393B3",
+    "#0000FF",
+    "#89CFF0",
+    "#F0FFFF",
+    "#00FFFF",
+    "#084b8f",
+    "#08088f",
+    "#4b088f",
+    "#8f088f",
+    "#8f084b",
+    "#73c6b6",
+    "#239b56",
+    "#839192",
+    "#d7dbdd",
+    "#76d7c4",
+    "#ba4a00",
+  ];
+
   return (
-    <div className="App">
+    <div className="App font">
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar style={{ justifyContent: "space-between", backgroundColor: "#24292e" }}>
           <img style={{ maxHeight: '50px' }} src={logo} alt="helpfulhuman_logo" />
@@ -120,17 +140,19 @@ function App() {
         }}
       >
         <Toolbar />
-        <div className={classes.drawerContainer}>
+        <div style={{ height: '100%', backgroundColor: '#e1e4e8' }} className={classes.drawerContainer}>
           <Box style={{ width: '100%', textAlign: 'center', marginTop: '30px' }}>
             <Button
-              variant="contained"
-              color="primary"
+              variant="outlined"
+              style={{ backgroundColor: '#fff', textTransform: 'none' }}
             >
-              Random Color
-          </Button>
+              <strong>
+                Random Color
+              </strong>
+            </Button>
           </Box>
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Brown', 'Gray'].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemText primary={text} />
               </ListItem>
@@ -138,6 +160,23 @@ function App() {
           </List>
         </div>
       </Drawer>
+      {curr === "main" && (
+        <div style={{ marginTop: '200px', marginLeft: '500px' }}>
+          {colors.slice(12 * page - 12, 12 * page).map(color => <div>
+            <Card className={classes.root}>
+              <CardActionArea>
+                <div style={{ backgroundColor: color, height: 150, width: 150 }} />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {color}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </div>)}
+          <Pagination count={10} page={page} onChange={handleChange} />
+        </div>
+      )}
     </div>
   );
 }
