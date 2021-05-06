@@ -1,69 +1,70 @@
-# Helpful Human Applicant Interview Challenge
+# Getting Started with Create React App
 
-Welcome to Helpful Human's at home proficiency challenge! This challenge gauges your knowledge on a few different metrics that we use, in part, to evaluate your skills. In this repo, you will find the assets that are required to replicate the design that is also included in this repo. Both .sketch and .png assets are available.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-To get started, clone this repo. Add your work to it in whatever structure you prefer, then push it to your own, renamed repo. When you are finished, follow the instructions at the end of this document.
+## Available Scripts
 
-This challenge has different milestones.
+In the project directory, you can run:
 
-## Core
-Stated briefly, the core goal is to create a simple but functional app that has a data, view and logic layer. The app will display color swatches, and that's about it!
+### `yarn start`
 
-The core goals should be completed in full. 
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Stretch
-The stretch goals can also be met if you choose to do so. Not completing the stretch goals does not disqualify you in any way nor will it lead to a disadvantage in comparison to other applicants.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-## Bonus Stretch
-Bonus stretch goals inherit properties of stretch goals but completing these goals will say to us, "I believe the code I've written for the core goals and the stretch goals is production ready".
+### `yarn test`
 
-## Additional Information
-An applicant completing a well thought out solution to the core challenges is just as meaningful to us as a solution that completes all goals but is not implemented very well.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-If you'd like to implement additional functionality, or change the functionality of this challenge, feel free but be prepared to discuss your reasoning for doing so. We like critical thinking. We don't like improper implementation without reason.
+### `yarn build`
 
-## Time
-Keep track of how much time you spent on the challenge but also feel free to spend as much time as you want. Your time is very valuable and we are thankful you're taking the time demonstrate your skills for us.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Core Goals
-- Replicate design
-  - [Font](./FONT.md)
-  - Styles
-  - Iconography
-- Replicate functionality
-  - Create a database of colors (minimum 100)
-  - Paginate your data to show a certain number of swatches at a time
-  - Display both the color swatch and the label of the color
-  - Ability to select random color and modify view accordingly
-  - Clicking swatch changes to color detail view
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Stretch Goals
-- Design
-  - Make it responsive
-- Functionality
-  - Generate color list from a script
+### `yarn eject`
 
-## Bonus Stretch Goals
-- Design
-  - Include interaction design
-  - Add tints/shades in detail view
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-- Functionality
-  - Add search functionality
-  - Color generation script guarantees same colors and order
-  - Group by color (Make sidebar menu functional)
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-- Data
-  - Fetch data with GraphQL
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Deliverables
-In your email submission response to the test invitation from AngelList, please include the following:
-- Link to your repo
-- URL to your hosted App (Use a free hosting service of your choice)
-- [Include a Donger](http://dongerlist.com/) that best represents your state of mind when complete
+## Learn More
 
-Thanks and we look forward to your submission!
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-ლ ( ◕  ᗜ  ◕ ) ლ
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `yarn build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
