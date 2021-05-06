@@ -1,7 +1,6 @@
 import logo from './logo-symbol.svg';
 import './App.css';
 import React, { useState } from 'react';
-// import './index.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
 import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItemText, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
@@ -150,6 +149,7 @@ function App() {
             <Button
               variant="outlined"
               style={{ backgroundColor: '#fff', textTransform: 'none' }}
+              onClick={() => { setCurr("detail"); setColor(colors[Math.floor(Math.random() * (colors.length - 1))]); }}
             >
               <strong>
                 Random Color
@@ -182,7 +182,9 @@ function App() {
                 </Card>
               </Grid>)}
             </Grid>
-            <Pagination count={Math.ceil(colors.length / 12)} page={page} onChange={handleChange} />
+            <Box style={{ marginTop: '20px' }} display="flex" justifyContent="center">
+              <Pagination count={Math.ceil(colors.length / 12)} page={page} onChange={handleChange} />
+            </Box>
           </>
         )}
         {curr === 'detail' && (
@@ -198,15 +200,15 @@ function App() {
               </CardActionArea>
             </Card>
             <Box display="flex" justifyContent="center">
-            <Button
-              onClick={()=>{setCurr("main");}}
-              variant="outlined"
-              style={{ width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
-            >
-              <strong>
-                Clear
+              <Button
+                onClick={() => { setCurr("main"); }}
+                variant="outlined"
+                style={{ width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
+              >
+                <strong>
+                  Clear
               </strong>
-            </Button>
+              </Button>
             </Box>
           </>
         )}
