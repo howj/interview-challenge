@@ -1,318 +1,446 @@
-import logo from './logo-symbol.svg';
-import './App.css';
-import React, { useState } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import { Pagination } from '@material-ui/lab';
-import { Container, Grid, Typography, CardActionArea, CardContent, Card, Box, List, ListItem, Button, Drawer, AppBar, InputBase, Toolbar } from '@material-ui/core';
+import React from "react";
 
-const drawerWidth = 240;
-const swatches_per_page = 12;
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    backgroundColor: '#d1d5da',
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: 'auto',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+class CheckersBoard extends React.Component {
+  state = {
+    board: [
+      [0, 1, 0, 1, 0, 1, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0],
+      [0, 1, 0, 1, 0, 1, 0, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [2, 0, 2, 0, 2, 0, 2, 0],
+      [0, 2, 0, 2, 0, 2, 0, 2],
+      [2, 0, 2, 0, 2, 0, 2, 0]
+    ],
+    turn: 2,
+    actions: {
+      text: 'No piece selected',
+      piece: {
+        row: -1,
+        col: -1,
+      },
     },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  inputRoot: {
-    backgroundColor: 'inherit',
-  },
-  inputInput: {
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-}));
-
-function App() {
-  const classes = useStyles();
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [currColor, setColor] = useState("");
-  const [curr, setCurr] = useState("main");
-  const handleChange = (event, value) => {
-    setPage(value);
+    possibleMoves: [],
+    madeMove: false,
   };
 
-  const colors = [
-    "#088F8F",
-    "#7393B3",
-    "#0000FF",
-    "#89CFF0",
-    "#F0FFFF",
-    "#00FFFF",
-    "#084b8f",
-    "#08088f",
-    "#4b088f",
-    "#8f088f",
-    "#8f084b",
-    "#73c6b6",
-    "#239b56",
-    "#839192",
-    "#d7dbdd",
-    "#76d7c4",
-    "#ba4a00",
-    "#7b7d7d",
-    "#626567",
-    "#424949",
-    "#4d5656",
-    "#1b2631",
-    "#17202a",
-    "#145a32",
-    "#186a3b",
-    "#7d6608",
-    "#7e5109",
-    "#784212",
-    "#6e2c00",
-    "#1b4f72",
-    "#154360",
-    "#4a235a",
-    "#512e5f",
-    "#78281f",
-    "#641e16",
-    "#8e44ad",
-    "#2980b9",
-    "#3498db",
-    "#16a085",
-    "#27ae60",
-    "#1abc9c",
-    "#d7dbdd",
-    "#f7dc6f",
-    "#e59866",
-    "#f0b27a",
-    "#f8c471",
-    "#f4f6f7",
-    "#9b59b6",
-    "#58d68d",
-    "#73c6b6",
-    "#c39bd3",
-    "#aed6f1",
-    "#808b96",
-    "#85929e",
-    "#34495e",
-    "#a04000",
-    "#dc7633",
-    "#bb8fce",
-    "#7d3c98",
-    "#229954",
-    "#2e86c1",
-    "#a569bd",
-    "#e8daef",
-    "#f5b7b1",
-    "#aed6f1",
-    "#aab7b8",
-    "#212f3d",
-    "#196f3d",
-    "#b7950b",
-    "#b3b6b7",
-    "#229954",
-    "#660000",
-    "#CC0000",
-    "#CC3300",
-    "#CC6600",
-    "#CC9900",
-    "#CCCC00",
-    "#00CCCC",
-    "#0066CC",
-    "#3300FF",
-    "#333399",
-    "#339999",
-    "#339933",
-    "#663366",
-    "#6633CC",
-    "#FF00FF",
-    "#9900CC",
-    "#990099",
-    "#FF0066",
-    "#CCFF66",
-    "#CC9966",
-    "#CC00CC",
-    "#CC66CC",
-    "#660099",
-    "#66FFFF",
-    "#003300",
-    "#006633",
-    "#66CCCC",
-    "#00FFFF",
-    "#0000FF",
-    "#33CC33",
-  ];
+  // Helper function to determine if the row and col examined is within
+  // the board limits
+  isInbounds(board, row, col) {
+    return ((0 <= row && row < 8) && (0 <= col && col < 8));
+  }
 
-  return (
-    <div className="App">
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar style={{ justifyContent: "space-between", backgroundColor: "#24292e" }}>
-          <img style={{ maxHeight: '50px' }} src={logo} alt="helpfulhuman_logo" />
-          <InputBase
-            onChange={(event) => {
-              if (event.target.value && event.target.value !== "") {
-                setSearch(event.target.value);
-                if (colors.find(color => color === event.target.value)) {
-                  setColor(event.target.value);
-                  setCurr("detail");
-                } else {
-                  setCurr("main");
-                }
-              } else {
-                setSearch("");
-                setCurr("main");
+  // Kings can go backwards (to greater row values if RED, to lesser if WHITE)
+  // A regular piece has 4 spots it could possibly go to while a king has 8
+  determineMoves(board, row, col, opponentColor, isKing, hasJump) {
+    const movesObject = {
+      moves: [],
+      hasJump: hasJump,
+    };
+    let jumpValue;
+    let rowValue;
+    if (opponentColor === 1) {
+      rowValue = row - 2;
+      jumpValue = row - 1;
+    } else {
+      rowValue = row + 2;
+      jumpValue = row + 1;
+    }
+    if (this.isInbounds(board, rowValue, col - 2)) {
+      if (board[rowValue][col - 2] === 0 && (board[jumpValue][col - 1] === opponentColor || board[jumpValue][col - 1] === opponentColor * 10)) {
+        movesObject.moves.push({
+          row: rowValue,
+          col: col - 2,
+          key: `(${rowValue},${col - 2})`,
+          isJump: true,
+        });
+        movesObject.hasJump = true;
+      }
+    }
+    if (this.isInbounds(board, rowValue, col + 2)) {
+      if (board[rowValue][col + 2] === 0 && (board[jumpValue][col + 1] === opponentColor || board[jumpValue][col + 1] === opponentColor * 10)) {
+        movesObject.moves.push({
+          row: rowValue,
+          col: col + 2,
+          key: `(${rowValue},${col + 2})`,
+          isJump: true,
+        });
+        movesObject.hasJump = true;
+      }
+    }
+    if (isKing) {
+      if (opponentColor === 1) {
+        rowValue = row + 2;
+        jumpValue = row + 1;
+      } else {
+        rowValue = row - 2;
+        jumpValue = row - 1;
+      }
+      if (this.isInbounds(board, rowValue, col - 2)) {
+        if (board[rowValue][col - 2] === 0 && (board[jumpValue][col - 1] === opponentColor || board[jumpValue][col - 1] === opponentColor * 10)) {
+          movesObject.moves.push({
+            row: rowValue,
+            col: col - 2,
+            key: `(${rowValue},${col - 2})`,
+            isJump: true,
+          });
+          movesObject.hasJump = true;
+        }
+      }
+      if (this.isInbounds(board, rowValue, col + 2)) {
+        if (board[rowValue][col + 2] === 0 && (board[jumpValue][col + 1] === opponentColor || board[jumpValue][col + 1] === opponentColor * 10)) {
+          movesObject.moves.push({
+            row: rowValue,
+            col: col + 2,
+            key: `(${rowValue},${col + 2})`,
+            isJump: true,
+          });
+          movesObject.hasJump = true;
+        }
+      }
+    }
+    if (opponentColor === 1) {
+      rowValue = row - 1;
+    } else {
+      rowValue = row + 1;
+    }
+    if (!movesObject.hasJump && !hasJump) {
+      if (this.isInbounds(board, rowValue, col - 1)) {
+        if (board[rowValue][col - 1] === 0) {
+          movesObject.moves.push({
+            row: rowValue,
+            col: col - 1,
+            key: `(${rowValue},${col - 1})`,
+            isJump: false,
+          });
+        }
+      }
+      if (this.isInbounds(board, rowValue, col + 1)) {
+        if (board[rowValue][col + 1] === 0) {
+          movesObject.moves.push({
+            row: rowValue,
+            col: col + 1,
+            key: `(${rowValue},${col + 1})`,
+            isJump: false,
+          });
+        }
+      }
+    }
+    // add more cases if piece is a king
+    if (isKing) {
+      if (opponentColor === 1) {
+        rowValue = row + 1;
+      } else {
+        rowValue = row - 1;
+      }
+      if (!movesObject.hasJump && !hasJump) {
+        if (this.isInbounds(board, rowValue, col - 1)) {
+          if (board[rowValue][col - 1] === 0) {
+            movesObject.moves.push({
+              row: rowValue,
+              col: col - 1,
+              key: `(${rowValue},${col - 1})`,
+              isJump: false,
+            });
+          }
+        }
+        if (this.isInbounds(board, rowValue, col + 1)) {
+          if (board[rowValue][col + 1] === 0) {
+            movesObject.moves.push({
+              row: rowValue,
+              col: col + 1,
+              key: `(${rowValue},${col + 1})`,
+              isJump: false,
+            });
+          }
+        }
+      }
+    }
+    return movesObject;
+  }
+
+  render() {
+    const spaceSize = this.props.size / 8;
+    const pieceRadius = spaceSize / 2;
+
+    const whoseTurn = `Turn: ${this.state.turn === 2 ? 'Red' : 'White'}`;
+
+    let hasJump = false;
+    const map = new Map();
+
+    let gameOver = false;
+
+    // Calculate all possible moves for pieces color === turn
+    for (let i = 0; i < this.state.board.length; i++) {
+      for (let j = 0; j < this.state.board[0].length; j++) {
+        if (this.state.board[i][j] === this.state.turn || this.state.board[i][j] === this.state.turn * 10 ) {
+          const opponentColor = this.state.turn === 1 ? 2 : 1;
+          const movesObject = this.determineMoves(this.state.board, i, j, opponentColor, this.state.board[i][j] > 2, hasJump);
+          if (movesObject.hasJump) {
+            hasJump = true;
+          }
+          if (movesObject.moves.length > 0) {
+            map.set(`(${i},${j})`, movesObject.moves);
+          }
+        }
+      }
+    }
+    if (map.size === 0) {
+      gameOver = true;
+    }
+
+    return (
+      <div style={{ display: 'flex' }}>
+        <svg
+          height={this.props.size}
+          width={this.props.size}
+          viewBox={`0 0 ${this.props.size} ${this.props.size}`}
+        >
+          {this.state.board.map((row, y) => {
+            const isEvenRow = y % 2;
+            const spaceY = spaceSize * y;
+
+            return row.map((space, x) => {
+              const isEvenSpace = x % 2;
+              const spaceX = spaceSize * x;
+
+              return (
+                <Space
+                  selectMove={() => {
+                    // If the piece we just moved was a king, or the piece
+                    // entered the final row, promote it
+                    const oldRow = this.state.actions.piece.row;
+                    const oldCol = this.state.actions.piece.col;
+                    if (this.state.board[oldRow][oldCol] > 2
+                      || (this.state.turn === 1 && y === 7)
+                      || (this.state.turn === 2 && y === 0)
+                    ) {
+                      this.state.board[y][x] = this.state.turn * 10;
+                    } else {
+                      this.state.board[y][x] = this.state.turn;
+                    }
+                    this.state.board[oldRow][oldCol] = 0;
+                    hasJump = true; // set this value, so possibleMoves only contains jumps from this piece
+                    const opponentColor = this.state.turn === 1 ? 2 : 1;
+                    // if move was just jump, remove the opponent's piece from the board by setting to 0
+                    const wasJump = map.get(`(${oldRow},${oldCol})`).find(move => move.isJump);
+                    if (wasJump) {
+                      this.state.board[(oldRow+y)/2][(oldCol+x)/2] = 0;
+                    }
+                    const movesObject = this.determineMoves(this.state.board, y, x, opponentColor, this.state.board[y][x] > 2, hasJump);
+
+                    this.setState((state) => {
+                      return {
+                        possibleMoves: wasJump ? movesObject.moves : [], // if just jumped, and jumps available, then we can move again
+                        madeMove: true,
+                        actions: {
+                          text: `Moved piece to (${y},${x}) from (${oldRow},${oldCol})`,
+                          piece: {
+                            row: y,
+                            col: x,
+                          },
+                        }
+                      };
+                    });
+                  }}
+                  available={this.state.possibleMoves.find(move => move.row === y && move.col === x)}
+                  key={x}
+                  shade={
+                    (isEvenSpace && !isEvenRow) || (!isEvenSpace && isEvenRow)
+                  }
+                  size={spaceSize}
+                  x={spaceX}
+                  y={spaceY}
+                />
+              );
+            });
+          })}
+          {this.state.board.map((row, y) => {
+            const spaceY = spaceSize * y;
+
+            return row.map((space, x) => {
+              const spaceX = spaceSize * x;
+
+              if (space === 0) {
+                // The space is empty.
+                return null;
               }
-            }}
-            style={{ fontFamily: "Source Serif Pro", backgroundColor: 'white' }}
-            placeholder="Search"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'searchinput' }}
-          />
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <Toolbar />
-        <div style={{ height: '100%', backgroundColor: '#e1e4e8' }} className={classes.drawerContainer}>
-          <Box style={{ width: '100%', textAlign: 'center', marginTop: '30px' }}>
-            <Button
-              variant="outlined"
-              style={{ fontFamily: "Source Serif Pro", backgroundColor: '#fff', textTransform: 'none' }}
-              onClick={() => { setCurr("detail"); setColor(colors[Math.floor(Math.random() * (colors.length - 1))]); }}
-            >
-              <strong>
-                Random Color
-              </strong>
-            </Button>
-          </Box>
-          <List>
-            {['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Brown', 'Gray'].map((text, index) => (
-              <ListItem style={{ fontFamily: "Source Serif Pro" }} button key={text}>
-                <div style={{ fontFamily: "Source Serif Pro" }}>
-                  {text}
-                </div>
-              </ListItem>
-            ))}
-          </List>
-        </div>
-      </Drawer>
-      <Container style={{ marginTop: '100px', marginLeft: drawerWidth }}>
-        {curr === "main" && (
-          <>
-            <Grid container spacing={2}>
-              {colors.slice(swatches_per_page * page - swatches_per_page, swatches_per_page * page).map(color => <Grid item xs={3}>
-                <Card onClick={() => { setCurr("detail"); setColor(color); }} className={classes.root}>
-                  <CardActionArea>
-                    <div style={{ backgroundColor: color, height: 150, width: 300 }} />
-                    <CardContent>
-                      <Typography style={{ fontFamily: "Source Serif Pro" }} gutterBottom variant="h5" component="h2">
-                        {color}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>)}
-            </Grid>
-            <Box style={{ marginTop: '20px' }} display="flex" justifyContent="center">
-              <Pagination count={Math.ceil(colors.length / swatches_per_page)} page={page} onChange={handleChange} />
-            </Box>
-          </>
-        )}
-        {curr === 'detail' && (
-          <>
-            <Card className={classes.root}>
-              <CardActionArea>
-                <div style={{ backgroundColor: currColor, height: 600, width: 'auto' }} />
-                <CardContent>
-                  <Typography style={{ fontFamily: "Source Serif Pro" }} gutterBottom variant="h5" component="h2">
-                    {currColor}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            <Box display="flex" justifyContent="center">
-              <Button
-                onClick={() => { setCurr("main"); setSearch(""); setColor(""); }}
-                variant="outlined"
-                style={{ fontFamily: "Source Serif Pro", width: '130px', marginTop: '20px', backgroundColor: '#fff', textTransform: 'none' }}
+
+              return (
+                <Piece
+                  isKing={this.state.board[y][x] > 2}
+                  isDisabled={(y === this.state.actions.piece.row && x === this.state.actions.piece.col) ? this.state.possibleMoves.length === 0 : this.state.madeMove}
+                  selected={this.state.actions.text === `Selected piece at (${y},${x})`}
+                  // When a player clicks their own Piece on their own turn
+                  // show available spaces for the player to move their Piece
+                  showAvailableMoves={() => {
+                    const moves = map.get(`(${y},${x})`);
+                    let prunedMoves = [];
+                    // If there is a jump available, we prune the possible moves by only adding jump moves
+                    moves && moves.forEach(move => {
+                      if (hasJump) {
+                        if (move.isJump) {
+                          prunedMoves.push({
+                            row: move.row,
+                            col: move.col,
+                          });
+                        }
+                      } else {
+                        prunedMoves.push({
+                          row: move.row,
+                          col: move.col,
+                        });
+                      }
+                    });
+                    this.setState((state) => {
+                      return {
+                        actions: {
+                          text: `Selected piece at (${y},${x})`,
+                          piece: {
+                            row: y,
+                            col: x,
+                          },
+                        },
+                        possibleMoves: prunedMoves,
+                      };
+                    });
+                  }}
+                  turn={this.state.turn}
+                  key={x}
+                  centerX={spaceX + pieceRadius}
+                  centerY={spaceY + pieceRadius}
+                  player={space}
+                  radius={pieceRadius * 0.75}
+                />
+              );
+            });
+          })}
+        </svg>
+        <div style={{ marginLeft: '10px' }}>
+          {gameOver && (
+            <div>
+              {`Game over. ${this.state.turn === 2 ? 'White' : 'Red'} is the victor`}
+            </div>
+          )}
+          {!gameOver && (
+            <>
+              {whoseTurn}
+              <button
+                disabled={!this.state.madeMove || this.state.possibleMoves.length > 0}
+                style={{ marginLeft: '10px' }}
+                onClick={() => {
+                  this.setState((state) => {
+                    return {
+                      madeMove: false,
+                      turn: state.turn === 2 ? 1 : 2,
+                      actions: {
+                        text: 'No piece selected',
+                        piece: {
+                          row: -1,
+                          col: -1,
+                        },
+                      },
+                      possibleMoves: [],
+                    };
+                  });
+                }}
               >
-                <strong>
-                  Clear
-              </strong>
-              </Button>
-            </Box>
-          </>
-        )}
-      </Container>
-    </div>
-  );
+                End Turn
+              </button>
+              <div>
+                {this.state.actions.text}
+              </div>
+              {this.state.actions.text !== 'No piece selected' && (
+                <div>
+                  Possible moves:
+                  {' '}
+                  {this.state.possibleMoves.length > 0 ? this.state.possibleMoves.map(move => { return (<div>{`(${move.row},${move.col})`}</div>) }) : 'None'}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+}
+
+class Space extends React.Component {
+  render() {
+    let fill;
+    if (this.props.available) {
+      fill = 'yellow';
+    } else if (this.props.shade) {
+      fill = 'green';
+    } else {
+      fill = 'lightgray';
+    }
+    return (
+      <rect
+        onClick={() => {
+          if (this.props.available) {
+            this.props.selectMove();
+          }
+        }}
+        fill={fill}
+        height={this.props.size}
+        width={this.props.size}
+        x={this.props.x}
+        y={this.props.y}
+      />
+    );
+  }
+}
+
+class Piece extends React.Component {
+  render() {
+    let isDisabled = this.props.isDisabled;
+    if ((this.props.turn === 2 && this.props.player === 1) || (this.props.turn === 1 && this.props.player === 2)) {
+      isDisabled = true;
+    }
+    let fill;
+    if (this.props.player === 1 || this.props.player === 10) {
+      fill = this.props.selected ? 'gray' : 'white';
+    } else {
+      fill = this.props.selected ? 'orange' : 'red';
+    }
+    if (this.props.isKing) {
+      return (
+        <circle
+          cx={this.props.centerX}
+          cy={this.props.centerY}
+          fill={fill}
+          r={this.props.radius}
+          stroke="black"
+          strokeWidth="3"
+          onClick={() => {
+            if (!isDisabled) {
+              this.props.showAvailableMoves();
+            }
+          }}
+        />
+      );
+    }
+    if (!this.props.isKing) {
+      return (
+        <circle
+          cx={this.props.centerX}
+          cy={this.props.centerY}
+          fill={fill}
+          r={this.props.radius}
+          onClick={() => {
+            if (!isDisabled) {
+              this.props.showAvailableMoves();
+            }
+          }}
+        />
+      );
+    }
+  }
+}
+
+function App() {
+  return <CheckersBoard size={400} />;
 }
 
 export default App;
